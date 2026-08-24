@@ -26,21 +26,6 @@ The dataset is divided into:
 * **80% Training Data**
 * **20% Testing Data**
 The model predicts the health risk and calculates the accuracy.
-
-## Project Files
-```text
-air-quality-project/
-│
-├── air.csv
-├── train_model.py
-├── model.pkl
-└── README.md
-```
-## Installation
-Install the required libraries:
-```bash
-python3 -m pip install pandas scikit-learn joblib
-```
 ## How the Model Works
 1. The program reads data from `air.csv`.
 2. Air quality columns are selected as input features.
