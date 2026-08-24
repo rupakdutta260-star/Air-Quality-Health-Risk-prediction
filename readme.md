@@ -1,6 +1,6 @@
 # Air Quality Health Risk Prediction
 ## Project Description
-This project uses **Machine Learning** to predict the **Health Risk** based on different air quality parameters.
+This project uses **Machine Learning** and **Python** to predict the **Health Risk** based on different air quality parameters.
 The model is trained using the **Random Forest Classifier** algorithm.
 ## Dataset
 The project uses a CSV file named:
@@ -21,12 +21,14 @@ The project uses a CSV file named:
 * Scikit-learn
 * Joblib
 ## Machine Learning Algorithm
+
 **Random Forest Classifier**
 The dataset is divided into:
 * **80% Training Data**
 * **20% Testing Data**
 The model predicts the health risk and calculates the accuracy.
 ## How the Model Works
+
 1. The program reads data from `air.csv`.
 2. Air quality columns are selected as input features.
 3. `Health_Risk` is selected as the target.
