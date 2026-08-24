@@ -1,0 +1,138 @@
+import streamlit as st
+import pandas as pd
+import joblib
+
+# Load the trained model
+model, encoder = joblib.load("model.pkl")
+
+# Page settings
+st.set_page_config(
+    page_title="Air Quality Prediction",
+    page_icon="🌍",
+    layout="wide"
+)
+# Title
+st.title("🌍 Air Quality + Health Risk Prediction")
+st.write(
+    "Enter air quality values and predict the health risk."
+)
+# Sidebar
+st.sidebar.header("🌫️ Enter Air Quality Values")
+
+pm25 = st.sidebar.number_input(
+    "PM2.5",
+    min_value=0.0,
+    value=30.0
+)
+
+pm10 = st.sidebar.number_input(
+    "PM10",
+    min_value=0.0,
+    value=50.0
+)
+no2 = st.sidebar.number_input(
+    "NO2",
+    min_value=0.0,
+    value=25.0
+)
+so2 = st.sidebar.number_input(
+    "SO2",
+    min_value=0.0,
+    value=10.0
+)
+co = st.sidebar.number_input(
+    "CO",
+    min_value=0.0,
+    value=0.5
+)
+o3 = st.sidebar.number_input(
+    "O3",
+    min_value=0.0,
+    value=30.0
+)
+aqi = st.sidebar.number_input(
+    "AQI",
+    min_value=0,
+    value=70
+)
+# Dashboard
+st.subheader("📊 Air Quality Dashboard")
+
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("PM2.5", pm25)
+
+with col2:
+    st.metric("PM10", pm10)
+
+with col3:
+    st.metric("NO2", no2)
+
+with col4:
+    st.metric("AQI", aqi)
+
+# More values
+col5, col6, col7 = st.columns(3)
+
+with col5:
+    st.metric("SO2", so2)
+
+with col6:
+    st.metric("CO", co)
+
+with col7:
+    st.metric("O3", o3)
+
+# Chart
+st.subheader("📈 Pollution Levels")
+
+chart_data = pd.DataFrame({
+    "Pollutant": ["PM2.5", "PM10", "NO2", "SO2", "CO", "O3"],
+    "Value": [pm25, pm10, no2, so2, co, o3]
+})
+chart_data = chart_data.set_index("Pollutant")
+
+st.bar_chart(chart_data)
+
+# Prediction
+st.subheader("🤖 Health Risk Prediction")
+if st.button("🔍 Predict Health Risk"):
+    # Create input data
+    input_data = pd.DataFrame({
+        "PM2.5": [pm25],
+        "PM10": [pm10],
+        "NO2": [no2],
+        "SO2": [so2],
+        "CO": [co],
+        "O3": [o3],
+        "AQI": [aqi]
+    })
+    # Predict
+    prediction = model.predict(input_data)
+
+    # Convert number to Low/Medium/High
+    result = encoder.inverse_transform(prediction)[0]
+
+    # Show result
+    if result == "Low":
+
+        st.success("🟢 Health Risk: LOW")
+    elif result == "Medium":
+        st.warning("🟡 Health Risk: MEDIUM")
+    else:
+        st.error("🔴 Health Risk: HIGH")
+
+    # Show input data
+    st.subheader("📋 Input Data")
+    st.dataframe(
+        input_data,
+        use_container_width=True
+    )
+
+# Footer
+st.write("---")
+st.caption(
+    "🌍 Air Quality Health Risk Prediction | "
+    "Python + Pandas + Scikit-learn + Streamlit"
+)
