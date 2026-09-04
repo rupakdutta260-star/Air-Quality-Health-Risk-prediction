@@ -2,23 +2,19 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-# Load the trained model
+
 model, encoder = joblib.load("model.pkl")
 
-# Page settings
+
 st.set_page_config(
+
     page_title="Air Quality Prediction",
     page_icon="🌍",
     layout="wide"
 )
-# Title
-st.title("🌍 Air Quality + Health Risk Prediction")
-st.write(
-    "Enter air quality values and predict the health risk."
-)
-# Sidebar
-st.sidebar.header("🌫️ Enter Air Quality Values")
-
+st.title(" Air Quality + Health Risk Prediction")
+st.write("Enter air quality values and predict the health risk.")
+st.sidebar.header(" Enter Air Quality Values")
 pm25 = st.sidebar.number_input(
     "PM2.5",
     min_value=0.0,
@@ -55,9 +51,7 @@ aqi = st.sidebar.number_input(
     min_value=0,
     value=70
 )
-# Dashboard
-st.subheader("📊 Air Quality Dashboard")
-
+st.subheader("Air Quality Dashboard")
 col1, col2, col3, col4 = st.columns(4)
 
 with col1:
@@ -72,7 +66,7 @@ with col3:
 with col4:
     st.metric("AQI", aqi)
 
-# More values
+
 col5, col6, col7 = st.columns(3)
 
 with col5:
@@ -84,9 +78,7 @@ with col6:
 with col7:
     st.metric("O3", o3)
 
-# Chart
-st.subheader("📈 Pollution Levels")
-
+st.subheader("Pollution Levels")
 chart_data = pd.DataFrame({
     "Pollutant": ["PM2.5", "PM10", "NO2", "SO2", "CO", "O3"],
     "Value": [pm25, pm10, no2, so2, co, o3]
@@ -95,10 +87,8 @@ chart_data = chart_data.set_index("Pollutant")
 
 st.bar_chart(chart_data)
 
-# Prediction
-st.subheader("🤖 Health Risk Prediction")
-if st.button("🔍 Predict Health Risk"):
-    # Create input data
+st.subheader("Health Risk Prediction")
+if st.button("Predict Health Risk"):
     input_data = pd.DataFrame({
         "PM2.5": [pm25],
         "PM10": [pm10],
@@ -108,31 +98,30 @@ if st.button("🔍 Predict Health Risk"):
         "O3": [o3],
         "AQI": [aqi]
     })
-    # Predict
+
     prediction = model.predict(input_data)
 
-    # Convert number to Low/Medium/High
+
     result = encoder.inverse_transform(prediction)[0]
 
     # Show result
     if result == "Low":
 
-        st.success("🟢 Health Risk: LOW")
+        st.success("Health Risk: LOW")
     elif result == "Medium":
-        st.warning("🟡 Health Risk: MEDIUM")
+        st.warning("Health Risk: MEDIUM")
     else:
-        st.error("🔴 Health Risk: HIGH")
+        st.error("Health Risk: HIGH")
 
-    # Show input data
-    st.subheader("📋 Input Data")
+
+    st.subheader("Input Data")
     st.dataframe(
         input_data,
         use_container_width=True
     )
 
-# Footer
+
 st.write("---")
 st.caption(
-    "🌍 Air Quality Health Risk Prediction | "
-    "Python + Pandas + Scikit-learn + Streamlit"
+    "Air Quality Health Risk Prediction | "
 )
