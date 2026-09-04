@@ -1,4 +1,4 @@
-# Air Quality Health Risk Prediction
+it# Air Quality Health Risk Prediction
 ## Project Description
 This project uses **Machine Learning** and **Python** to predict the **Health Risk** based on different air quality parameters.
 The model is trained using the **Random Forest Classifier** algorithm.
